@@ -1,36 +1,39 @@
 package ca.ulaval.glo4002.cart.domain.shop;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Entity
 public class FragileShopItem extends ShopItem {
     private static final int FLAT_PRICE = 5;
     private static final int PRICE_PER_KG = 3;
 
     @XmlElement
     @JsonProperty
-    private String itemSku;
-
-    @XmlElement
-    @JsonProperty
+    @Column
     private String name;
 
     @XmlElement
     @JsonProperty
+    @Column
     private boolean available;
 
     @XmlElement
     @JsonProperty
+    @Column
     private int price;
 
     @XmlElement
     @JsonProperty
+    @Column
     private int weight;
 
     @XmlElement
     @JsonProperty
-    // Ne pas enlever @JsonProperty, ceci sert pour le panneau d'admin où on saisit les items
+    @Column
     private double profitMarginPercentage;
 
     public FragileShopItem(String itemSku, String name, int price, int weight, double profitMarginPercentage,
@@ -44,11 +47,6 @@ public class FragileShopItem extends ShopItem {
     }
 
     @Override
-    public String getSku() {
-        return itemSku;
-    }
-
-    @Override
     public String getName() {
         return name;
     }
@@ -56,11 +54,6 @@ public class FragileShopItem extends ShopItem {
     @Override
     public boolean isAvailable() {
         return available;
-    }
-
-    @Override
-    public boolean hasSku(String sku) {
-        return this.itemSku.equals(sku);
     }
 
     @Override

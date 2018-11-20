@@ -1,34 +1,37 @@
 package ca.ulaval.glo4002.cart.domain.shop;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Entity
 public class PrimeShopItem extends ShopItem {
 
     @XmlElement
     @JsonProperty
-    private String itemSku;
-
-    @XmlElement
-    @JsonProperty
+    @Column
     private String name;
 
     @XmlElement
     @JsonProperty
+    @Column
     private boolean available;
 
     @XmlElement
     @JsonProperty
+    @Column
     private int price;
 
     @XmlElement
     @JsonProperty
+    @Column
     private int weight;
 
     @XmlElement
     @JsonProperty
-    // Ne pas enlever @JsonProperty, ceci sert pour le panneau d'admin où on saisit les items
+    @Column
     private double profitMarginPercentage;
 
     private PrimeShopItem() {
@@ -46,11 +49,6 @@ public class PrimeShopItem extends ShopItem {
     }
 
     @Override
-    public String getSku() {
-        return itemSku;
-    }
-
-    @Override
     public String getName() {
         return name;
     }
@@ -58,11 +56,6 @@ public class PrimeShopItem extends ShopItem {
     @Override
     public boolean isAvailable() {
         return available;
-    }
-
-    @Override
-    public boolean hasSku(String sku) {
-        return this.itemSku.equals(sku);
     }
 
     @Override
