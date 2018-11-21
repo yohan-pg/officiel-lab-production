@@ -10,6 +10,7 @@ import ca.ulaval.glo4002.cart.interfaces.rest.cart.CartResource;
 import ca.ulaval.glo4002.cart.interfaces.rest.filters.CORSFilter;
 import ca.ulaval.glo4002.cart.interfaces.rest.filters.DoNotCopyFromTheWebFilter;
 import ca.ulaval.glo4002.cart.interfaces.rest.filters.EntityManagerContextFilter;
+import ca.ulaval.glo4002.cart.interfaces.rest.mappers.CannotFindCartExceptionMapper;
 import ca.ulaval.glo4002.cart.interfaces.rest.mappers.PersistenceExceptionMapper;
 import ca.ulaval.glo4002.cart.interfaces.rest.shop.ShopResource;
 import org.eclipse.jetty.server.Server;
@@ -19,19 +20,19 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 public class CartServer implements Runnable {
-	private static final int PORT = 7222;
+    private static final int PORT = 7222;
 
-	public static void main(String[] args) {
-		new CartServer().run();
-	}
+    public static void main(String[] args) {
+        new CartServer().run();
+    }
 
-	public void run() {
-	    configureContext();
+    public void run() {
+        configureContext();
         startServer();
     }
 
     private void configureContext() {
-	    new ApplicationContext().apply();
+        new ApplicationContext().apply();
     }
 
     private void startServer() {
@@ -42,7 +43,8 @@ public class CartServer implements Runnable {
         // Configuration manuelle au lieu du package scanning
         ResourceConfig packageConfig = new ResourceConfig()
                 .registerInstances(createClientResource(), createCartResource())
-                .registerInstances(new PersistenceExceptionMapper(), new ItemNotFoundException())
+                .registerInstances(new PersistenceExceptionMapper(), new ItemNotFoundException(),
+                        new CannotFindCartExceptionMapper())
                 .register(new DoNotCopyFromTheWebFilter())
                 .register(new CORSFilter());
 
@@ -62,10 +64,10 @@ public class CartServer implements Runnable {
     }
 
     private CartResource createCartResource() {
-		return new CartResource();
-	}
+        return new CartResource();
+    }
 
-	private ShopResource createClientResource() {
-		return new ShopResource();
-	}
+    private ShopResource createClientResource() {
+        return new ShopResource();
+    }
 }

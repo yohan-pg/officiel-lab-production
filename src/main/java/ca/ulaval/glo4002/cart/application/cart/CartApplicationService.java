@@ -3,6 +3,7 @@ package ca.ulaval.glo4002.cart.application.cart;
 import java.util.List;
 
 import ca.ulaval.glo4002.cart.application.ServiceLocator;
+import ca.ulaval.glo4002.cart.domain.cart.CannotFindCartException;
 import ca.ulaval.glo4002.cart.domain.cart.Cart;
 import ca.ulaval.glo4002.cart.domain.cart.CartItemFactory;
 import ca.ulaval.glo4002.cart.domain.cart.CartRepository;
@@ -19,9 +20,12 @@ public class CartApplicationService {
 	}
 
 	public Cart findOrCreateCartForClient(String email) {
-		List<Cart> carts = cartRepository.listCarts();
-
-        return getCartByOwner(email, carts);
+	    try {
+            List<Cart> carts = cartRepository.listCarts();
+            return getCartByOwner(email, carts);
+        } catch (Exception e) {
+	        throw new CannotFindCartException("Cannot find cart for " + email);
+        }
 	}
 
 	public void addItemToCart(String email, ShopItem item) {
